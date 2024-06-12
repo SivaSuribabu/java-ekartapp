@@ -1,0 +1,71 @@
+pipeline{
+    agent any
+
+    tools{
+        maven 'maven'
+        jdk 'jdk17'
+    }
+
+    environment{
+            SONAR_URL = "http://192.168.126.162:9000" 
+        }
+
+    stages {
+        stage("vcs checkout"){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+            }
+        }
+
+        stage("Code Compilation"){
+            steps{
+                sh 'mvn compile'
+            }
+        }
+
+        stage("Unit Testing"){
+            steps{
+                sh 'mvn test -DskipTests=true'
+            }
+        }
+
+        stage("SAST Code quality-SONAR"){
+            steps{
+                withCredentials([string(credentialsId: 'sonar-cred', variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+                }
+              }
+        }
+
+        stage("DAST Security Testinf-OWASP"){
+            steps{
+                dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage("Packaging the code"){
+            steps{
+                sh 'mnv package'
+            }
+        }
+
+        stage("Deploy to Nexus"){
+            steps{
+                withMaven(globalMavenSettingsConfig: 'cd61762c-3261-488f-ac0a-27746fa5447a', jdk: 'jdk17', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
+                sh 'mvn deploy -DskipTests=true'
+                }
+            }
+        }
+
+        stage("Docker build  image"){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        sh 'docker build -t sivasuribabu/ekart-app -f Dockerfile .'
+                    }
+                }
+            }
+        }
+    }
+}
