@@ -20,11 +20,11 @@ pipeline{
             }
         }
 
-        // stage('Unit Test'){
-        //     steps{
-        //         sh "mvn test -DskipTests=true"
-        //     }
-        // }
+        stage('Unit Test'){
+            steps{
+                sh "mvn test -DskipTests=true"
+            }
+        }
 
         stage('SAST static code analysis'){
             environment{
@@ -46,7 +46,7 @@ pipeline{
 
         stage('Packaging project'){
             steps{
-                sh 'mvn package'
+                sh 'mvn package '
             }
         }
     }
