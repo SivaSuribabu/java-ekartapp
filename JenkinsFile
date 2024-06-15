@@ -1,5 +1,7 @@
 pipeline{
 
+    agent any
+
     tools{
         java "jdk17"
         maven "maven"
@@ -7,7 +9,9 @@ pipeline{
 
     stages{
         stage("SCM"){
-            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+            }
         }
 
         stage("compile"){
