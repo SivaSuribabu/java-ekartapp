@@ -1,0 +1,21 @@
+pipeline{
+
+    tools{
+        java "jdk17"
+        maven "maven"
+    }
+
+    stages{
+        stage("SCM"){
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+        }
+
+        stage("compile"){
+            steps{
+                sh "mvn compile"
+            }
+        }
+    }
+
+
+}
