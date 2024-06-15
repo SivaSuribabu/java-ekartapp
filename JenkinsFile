@@ -8,13 +8,15 @@ pipeline{
     }
 
     stages{
+
+
         stage("SCM"){
             steps{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
             }
         }
 
-        stage("compile"){
+        stage("COMPILE"){
             steps{
                 sh "mvn compile"
             }
