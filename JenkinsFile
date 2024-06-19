@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('GitCheckout') {
+        stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/SivaSuribabu/java-ekartapp.git'
             }
