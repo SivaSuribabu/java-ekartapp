@@ -2,16 +2,15 @@ pipeline {
     agent any
 
     tools {
-        java 'jdk17'
+        // Ensure these names match the JDK and Maven installations configured in Jenkins
+        jdk 'jdk17'
         maven 'maven'
     }
 
-
     stages {
-
         stage('GitCheckout') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+                git branch: 'main', url: 'https://github.com/SivaSuribabu/java-ekartapp.git'
             }
         }
 
@@ -26,7 +25,17 @@ pipeline {
                 sh 'mvn test'
             }
         }
+    }
 
-
+    post {
+        always {
+            echo 'Pipeline completed'
+        }
+        success {
+            echo 'Pipeline succeeded'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
     }
 }
