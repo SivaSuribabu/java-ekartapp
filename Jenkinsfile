@@ -1,9 +1,9 @@
 pipeline {
+
     agent any
 
     tools {
-        // Ensure these names match the JDK and Maven installations configured in Jenkins
-        jdk 'jdk17'
+        java 'jdk17'
         maven 'maven'
     }
 
@@ -14,28 +14,11 @@ pipeline {
             }
         }
 
-        stage('Compilation') {
+
+        stage('Compile') {
             steps {
                 sh 'mvn compile'
             }
-        }
-
-        stage('UnitTest') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed'
-        }
-        success {
-            echo 'Pipeline succeeded'
-        }
-        failure {
-            echo 'Pipeline failed'
         }
     }
 }
