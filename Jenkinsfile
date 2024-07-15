@@ -7,6 +7,10 @@ pipeline {
         maven "maven3"
     }
 
+    environment {
+        SONAR_URL = "http://172.17.0.1:9000/"
+    }
+
     stages{
         stage("Checkout"){
             steps{ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
