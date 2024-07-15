@@ -40,7 +40,7 @@ pipeline {
                 }
         }
 
-        stage('Dast'){
+        stage('dependencycheck'){
             steps{
                 dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'DC'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
