@@ -24,5 +24,17 @@ pipeline {
                 sh "mvn test -DskpiTests=true"
             }
         }
+
+        stage("Sast"){
+            environment{
+                SONAR_URL = "http://172.17.0.1:9000/"
+            }
+
+            steps{
+                withSonarQubeEnv([string(credentialsId: 'sonar-cred', variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh 'mvn sonar:sonar -Dsonar.login =$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+                }
+            }
+        }
     }
 }
