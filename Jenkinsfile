@@ -3,8 +3,8 @@ pipeline{
     agent any 
 
     tools{
-    java "java17"
-    maven "maven"   
+        java "java17"
+        maven "maven"   
     }
 
     stages{
