@@ -1,22 +1,21 @@
-pipeline{
+pipeline {
 
-    agent any 
+    agent any
 
-    tools{
-        java "java17"
-        maven "maven"   
+    tools {
+        jdk "jdk17"
+        maven "maven3"
     }
 
     stages{
-        stage('Checkout'){
-            steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
+        stage("Checkout"){
+            steps{ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SivaSuribabu/java-ekartapp.git']])
             }
         }
 
-        stage('Compile'){
+        stage("Compile"){
             steps{
-                sh 'mvn compile'
+                sh "mvn compile"
             }
         }
     }
