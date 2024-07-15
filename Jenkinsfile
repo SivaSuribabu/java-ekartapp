@@ -18,5 +18,11 @@ pipeline {
                 sh "mvn compile"
             }
         }
+
+        stage("Unittest"){
+            steps{
+                sh "mvn test -DskpiTests=true"
+            }
+        }
     }
 }
